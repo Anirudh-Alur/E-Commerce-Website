@@ -97,7 +97,10 @@ nest-asyncio==1.6.0
 networkx==3.3
 notebook==7.2.1
 notebook_shim==0.2.4
-numpy==2.0.0
+
+# ✅ Replaced numpy==2.0.0 with a stable version
+numpy==1.26.4
+
 opencv-contrib-python==4.10.0.84
 opencv-python==4.10.0.84
 opt-einsum==3.3.0
@@ -122,8 +125,11 @@ pyparsing==3.1.2
 python-dateutil==2.9.0.post0
 python-json-logger==2.0.7
 pytz==2024.1
-pywin32==306
-pywinpty==2.0.13
+
+# ✅ Platform-specific packages (only installed on Windows)
+pywin32==306; platform_system == "Windows"
+pywinpty==2.0.13; platform_system == "Windows"
+
 PyYAML==6.0.1
 pyzmq==26.0.3
 qtconsole==5.5.2
