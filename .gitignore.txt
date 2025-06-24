@@ -1,0 +1,19 @@
+# Ignore virtual environment
+ecomenv/
+
+# Python cache
+__pycache__/
+*.pyc
+
+# Database file
+db.sqlite3
+
+# Static and media
+staticfiles/
+media/
+
+# IDE and OS files
+*.log
+*.env
+.vscode/
+.DS_Store
