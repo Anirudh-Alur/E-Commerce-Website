@@ -1,0 +1,47 @@
+<!-- templates/shop/order_invoice.html -->
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Order Invoice</title>
+  <style>
+    body { font-family: Arial, sans-serif; }
+    h2 { color: #333; }
+    table { width: 100%; border-collapse: collapse; }
+    table, th, td { border: 1px solid #999; }
+    th, td { padding: 8px; text-align: left; }
+  </style>
+</head>
+<body>
+  <h2>Order Receipt</h2>
+  <p><strong>Name:</strong> {{ order.name }}</p>
+  <p><strong>Email:</strong> {{ order.email }}</p>
+  <p><strong>Address:</strong> {{ order.address }}, {{ order.city }}, {{ order.state }} - {{ order.zipcode }}</p>
+  <p><strong>Phone:</strong> {{ order.phone }}</p>
+  <hr>
+
+  <h3>Order Items:</h3>
+  <table>
+    <tr>
+      <th>#</th>
+      <th>Item</th>
+      <th>Qty</th>
+      <th>Unit Price</th>
+      <th>Total</th>
+    </tr>
+    {% for item in cart_items %}
+    <tr>
+      <td>{{ forloop.counter }}</td>
+      <td>{{ item.name }}</td>
+      <td>{{ item.quantity }}</td>
+      <td>₹{{ item.unit_price }}</td>
+      <td>₹{{ item.total_price }}</td>
+    </tr>
+    {% endfor %}
+    <tr>
+      <td colspan="4" align="right"><strong>Total Paid:</strong></td>
+      <td>₹{{ order.total }}</td>
+    </tr>
+  </table>
+</body>
+</html>

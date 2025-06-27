@@ -20,10 +20,22 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from shop import views
+from django.conf.urls.static import static
+from django.conf import settings
+
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('',views.index,name='index'),
     path('<int:id>/',views.detail,name='detail'),
     path('checkout/',views.checkout,name='checkout'),
     path('success/', views.order_success, name="order_success"),
+    path('invoice/<int:order_id>/', views.generate_invoice, name='generate_invoice'),
+
+    path('success/<int:order_id>/', views.order_success, name="order_success"),
 ]
+
+
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
