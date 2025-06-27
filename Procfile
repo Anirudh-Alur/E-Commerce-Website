@@ -1,3 +1,3 @@
-web: gunicorn ecomsite.ecomsite.wsgi
+web: gunicorn ecomsite.wsgi
 
 
