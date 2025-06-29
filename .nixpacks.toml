@@ -1,0 +1,8 @@
+[phases.setup]
+nixPkgs = []
+
+[phases.install]
+cmd = "pip install -r requirements.txt"
+
+[phases.start]
+cmd = "gunicorn ecomsite.wsgi:application"
