@@ -1,0 +1,8 @@
+[phases.setup]
+nixPkgs = ["python311", "gcc", "openssl", "libffi"]
+
+[phases.install]
+cmd = "pip install --upgrade pip && pip install -r requirements.txt"
+
+[phases.start]
+cmd = "gunicorn ecomsite.wsgi:application"
