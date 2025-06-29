@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Checkout</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- Bootstrap + jQuery -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+  <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js"></script>
+</head>
+<body>
+
+<div class="container">
+
+  <!-- Success Message -->
+  {% if messages %}
+    <div class="mt-4">
+      {% for message in messages %}
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+          {{ message }}
+          <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <script> localStorage.removeItem('cart'); </script>
+      {% endfor %}
+    </div>
+  {% endif %}
+
+  <!-- Review Cart -->
+  <div class="row mt-5">
+    <div class="col-md-12">
+      <h1>Review your order</h1><hr>
+    </div>
+  </div>
+
+  <div class="row mb-4">
+    <div class="col-md-12">
+      <h4>Items in your cart</h4><hr>
+      <ul class="list-group" id="item_list"></ul>
+    </div>
+  </div>
+
+  <!-- Shipping Form -->
+  <div class="row">
+    <div class="col-md-12">
+      <h1>Enter shipping details</h1><hr>
+      <form method="POST">
+        {% csrf_token %}
+        <input type="hidden" id="items" name="items">
+        <div class="form-row">
+          <div class="form-group col-md-6">
+            <label>Name</label>
+            <input name="name" type="text" class="form-control" placeholder="John" required>
+          </div>
+          <div class="form-group col-md-6">
+            <label>Email</label>
+            <input name="email" type="email" class="form-control" placeholder="john@example.com" required>
+          </div>
+        </div>
+        <div class="form-group col-md-6">
+          <label for="inputPhone">Phone</label>
+          <input id="phone" name="phone" type="text" class="form-control" placeholder="1234567890" required>
+        </div>
+        <div class="form-group">
+          <label>Address</label>
+          <input name="address" type="text" class="form-control" placeholder="1234 Main St" required>
+        </div>
+        <div class="form-row">
+          <div class="form-group col-md-4">
+            <label>City</label>
+            <input name="city" type="text" class="form-control" required>
+          </div>
+          <div class="form-group col-md-4">
+            <label>State</label>
+            <input name="state" type="text" class="form-control" required>
+          </div>
+          <div class="form-group col-md-2">
+            <label>Zip</label>
+            <input name="zipcode" type="text" class="form-control" required>
+          </div>
+          <div class="form-group col-md-2">
+            <label>Amount to be paid</label>
+            <input readonly type="text" class="form-control" id="total" name="total">
+          </div>
+        </div>
+        <button type="submit" class="btn btn-warning">Place Order</button>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- JS Cart Logic -->
+<script>
+  let cart = localStorage.getItem('cart') ? JSON.parse(localStorage.getItem('cart')) : {};
+  let total = 0;
+  let itemString = "";
+
+  for (let item in cart) {
+    let name = cart[item][1];
+    let quantity = parseInt(cart[item][0]);
+    let unitPrice = parseFloat(cart[item][2]);
+    let totalPrice = parseFloat(cart[item][3]);
+    let originalPrice = parseFloat(cart[item][4]);
+
+    if (!quantity || isNaN(unitPrice) || isNaN(totalPrice)) continue;
+
+    total += totalPrice;
+
+    itemString += `
+      <li class="list-group-item d-flex justify-content-between align-items-center">
+        ${quantity} × ${name}<br>
+        <small>Original: ₹${originalPrice}, Discounted: ₹${unitPrice}</small>
+        <span class="badge badge-warning badge-pill">Total: ₹${totalPrice}</span>
+      </li>`;
+  }
+
+  $('#item_list').append(itemString);
+  $('#items').val(JSON.stringify(cart));
+  $('#total').val(total.toFixed(2));
+  $('#item_list').append(`
+    <li class="list-group-item d-flex justify-content-between align-items-center">
+      <b>Your total</b> <span>₹${total.toFixed(2)}</span>
+    </li>
+  `);
+
+  // Prevent form submission if cart is empty
+  document.querySelector("form").addEventListener("submit", function (e) {
+    if (total === 0) {
+      e.preventDefault();
+      alert("Your cart is empty. Please add items before placing an order.");
+    } else {
+      document.getElementById("total").value = total.toFixed(2);
+      localStorage.clear();
+    }
+  });
+</script>
+
+</body>
+</html>

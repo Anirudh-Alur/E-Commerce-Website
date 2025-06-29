@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Order Success</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+</head>
+<body>
+<div class="container mt-5">
+  <div class="alert alert-success">
+    <h4 class="alert-heading">Order placed successfully! 🎉🎉</h4>
+    <p>Thank you {{ order.name }} for shopping with us.</p>
+    {% if pdf_url %}
+      <hr>
+      <p class="mb-0">
+        <a href="{{ pdf_url }}" target="_blank" class="btn btn-primary">Download Invoice (PDF)</a>
+      </p>
+    {% endif %}
+    <hr>
+    <a href="/" class="btn btn-secondary mt-3">Back to Home</a>
+  </div>
+</div>
+</body>
+</html>
